@@ -3,7 +3,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 
 if (
-    !isset($_SERVER['PHP_AUTH_USER']) 
+    !isset($_SERVER['PHP_AUTH_USER']) ||
     !isset($_SERVER['PHP_AUTH_PW'])
 ) {
     header('WWW-Authenticate: Basic realm="Admin panel"');
