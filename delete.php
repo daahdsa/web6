@@ -28,7 +28,7 @@ $stmt->execute([$_SERVER['PHP_AUTH_USER']]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (
-    !$admin 
+    !$admin ||
     !password_verify($_SERVER['PHP_AUTH_PW'], $admin['password_hash'])
 ) {
     header('WWW-Authenticate: Basic realm="Admin panel"');
