@@ -3,7 +3,7 @@
 header('Content-Type: text/html; charset=UTF-8');
 
 if (
-    !isset($_SERVER['PHP_AUTH_USER']) ||
+    !isset($_SERVER['PHP_AUTH_USER']) 
     !isset($_SERVER['PHP_AUTH_PW'])
 ) {
 
@@ -34,7 +34,7 @@ $stmt->execute([
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (
-    !$admin ||
+    !$admin 
     !password_verify(
         $_SERVER['PHP_AUTH_PW'],
         $admin['password_hash']
@@ -69,51 +69,51 @@ ORDER BY total DESC
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Админка</title>
+<meta charset="UTF-8">
+<title>Админка</title>
 
-    <style>
+<style>
 
-        body{
-            font-family: Arial, sans-serif;
-            background:#f5f5f5;
-            margin:20px;
-        }
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:20px;
+}
 
-        table{
-            border-collapse:collapse;
-            width:100%;
-            background:white;
-        }
+table{
+    border-collapse:collapse;
+    width:100%;
+    background:white;
+}
 
-        th,td{
-            border:1px solid #ccc;
-            padding:10px;
-        }
+th,td{
+    border:1px solid #ccc;
+    padding:10px;
+}
 
-        th{
-            background:#eee;
-        }
+th{
+    background:#eee;
+}
 
-        a{
-            text-decoration:none;
-        }
+a{
+    text-decoration:none;
+}
 
-        .edit{
-            color:green;
-        }
+.edit{
+    color:green;
+}
 
-        .delete{
-            color:red;
-        }
+.delete{
+    color:red;
+}
 
-        .stats{
-            margin-top:40px;
-            background:white;
-            padding:20px;
-        }
+.stats{
+    margin-top:40px;
+    background:white;
+    padding:20px;
+}
 
-    </style>
+</style>
 </head>
 
 <body>
@@ -124,40 +124,89 @@ ORDER BY total DESC
 
 <table>
 
-    <tr>
-        <th>ID</th>
-        <th>ФИО</th>
-        <th>Телефон</th>
-        <th>Email</th>
-        <th>Дата рождения</th>
-        <th>Пол</th>
-    </tr>
+<tr>
+    <th>ID</th>
+    <th>ФИО</th>
+    <th>Телефон</th>
+    <th>Email</th>
+    <th>Дата рождения</th>
+    <th>Пол</th>
+    <th>Действия</th>
+</tr>
 
-    <?php foreach ($users as $user): ?>
+<?php foreach ($users as $user): ?>
 
-        <tr>
+<tr>
 
-            <td><?= $user['id'] ?></td>
+<td><?= $user['id'] ?></td>
 
-            <td><?= htmlspecialchars($user['full_name']) ?></td>
+<td><?= htmlspecialchars($user['full_name']) ?></td>
 
-            <td><?= htmlspecialchars($user['phone']) ?></td>
+<td><?= htmlspecialchars($user['phone']) ?></td>
 
-            <td><?= htmlspecialchars($user['email']) ?></td>
+<td><?= htmlspecialchars($user['email']) ?></td>
 
-            <td><?= htmlspecialchars($user['birth_date']) ?></td>
+<td><?= htmlspecialchars($user['birth_date']) ?></td>
 
-            <td><?= htmlspecialchars($user['gender']) ?></td>
+<td><?= htmlspecialchars($user['gender']) ?></td>
 
+<td>
 
+<a
+class="edit"
+href="admin_edit.php?id=<?= $user['id'] ?>"
+>
+Редактировать
+</a>
 
-        </tr>
+|
 
-    <?php endforeach; ?>
+<a
+class="delete"
+href="delete.php?id=<?= $user['id'] ?>"
+onclick="return confirm('Удалить запись?')"
+>
+Удалить
+</a>
+
+</td>
+
+</tr>
+
+<?php endforeach; ?>
 
 </table>
 
+<div class="stats">
 
+<h2>Статистика языков программирования</h2>
+
+<table>
+
+<tr>
+<th>Язык</th>
+<th>Количество пользователей</th>
+</tr>
+
+<?php foreach ($stats as $row): ?>
+
+<tr>
+
+<td>
+<?= htmlspecialchars($row['name']) ?>
+</td>
+
+<td>
+<?= $row['total'] ?>
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</table>
+
+</div>
 
 </body>
 </html>
